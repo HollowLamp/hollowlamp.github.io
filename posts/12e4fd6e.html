@@ -1,0 +1,288 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>CS70学习记录-递归与数学归纳 | 空心灯的星空</title><meta name="author" content="空心灯"><meta name="copyright" content="空心灯"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="CS70 note3 主要讲的是数学归纳法，其中也谈到了数学归纳与递归函数的关系。以下是note 3中的两个问题，感觉还挺有意思。笔者此时还没学过正经的算法分析课，理解不到位的地方欢迎指正。 Postage Stamp Problem原题 Use the proof of Theorem 3.6 to design an algorithm that, given any amount of po">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS70学习记录-递归与数学归纳">
+<meta property="og:url" content="http://hollowlamp.com/posts/12e4fd6e.html">
+<meta property="og:site_name" content="空心灯的星空">
+<meta property="og:description" content="CS70 note3 主要讲的是数学归纳法，其中也谈到了数学归纳与递归函数的关系。以下是note 3中的两个问题，感觉还挺有意思。笔者此时还没学过正经的算法分析课，理解不到位的地方欢迎指正。 Postage Stamp Problem原题 Use the proof of Theorem 3.6 to design an algorithm that, given any amount of po">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://bu.dusays.com/2024/03/04/65e4a3abd4a5e.png">
+<meta property="article:published_time" content="2023-12-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-03-03T17:16:27.492Z">
+<meta property="article:author" content="空心灯">
+<meta property="article:tag" content="CS课程">
+<meta property="article:tag" content="学习记录">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bu.dusays.com/2024/03/04/65e4a3abd4a5e.png"><link rel="shortcut icon" href="/img/web_logo.svg"><link rel="canonical" href="http://hollowlamp.com/posts/12e4fd6e.html"><link rel="preconnect" href="//cdnjs.cloudflare.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.24/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdnjs.cloudflare.com/ajax/libs/egjs-infinitegrid/4.10.1/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'CS70学习记录-递归与数学归纳',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-03-04 01:16:27'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/oneimg.css" media="defer" onload="this.media='all'"><meta name="generator" content="Hexo 7.0.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-diamond"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/saysome/"><i class="fa-fw fa fa-comments-o"></i><span> 说说</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://bu.dusays.com/2024/03/04/65e4a3abd4a5e.png')"><nav id="nav"><span id="blog-info"><a href="/" title="空心灯的星空"><img class="site-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/blog_logo.jpg"/><span class="site-name">空心灯的星空</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-diamond"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/saysome/"><i class="fa-fw fa fa-comments-o"></i><span> 说说</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">CS70学习记录-递归与数学归纳</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-12-25T16:00:00.000Z" title="发表于 2023-12-26 00:00:00">2023-12-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-03T17:16:27.492Z" title="更新于 2024-03-04 01:16:27">2024-03-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93/">学习小结</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>8分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="CS70学习记录-递归与数学归纳"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>CS70 note3 主要讲的是数学归纳法，其中也谈到了数学归纳与递归函数的关系。以下是note 3中的两个问题，感觉还挺有意思。笔者此时还没学过正经的算法分析课，理解不到位的地方欢迎指正。</p>
+<h3 id="Postage-Stamp-Problem"><a href="#Postage-Stamp-Problem" class="headerlink" title="Postage Stamp Problem"></a>Postage Stamp Problem</h3><p>原题</p>
+<p>Use the proof of Theorem 3.6 to design an algorithm that, given any amount of postage of at least 12c, outputs the numbers of 4c and 5c stamps that make up this postage. What’s the largest number of 5c stamps your algorithm will ever use?</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://bu.dusays.com/2024/03/04/65e4a3f10d395.png"></p>
+<p>大意就是根据这个归纳法证明的思路，设计一个算法，输入一个n，输出对应x与y</p>
+<p>这里归纳法的思路就是，给出4个base case，之后假设在一个范围内，对于每一个n都成立，这个范围称为假设成立范围，然后将范围扩大一个数，我们需要证明对于多加的k+1也成立。我们的假设成立范围是[12, k]，而要证明的k+1在[16, 无穷大]这个范围内。而k+1-4&#x3D;k-3处在[12, k]范围内，说明k+1-4可以被表示为4x+5y的形式，那么k+1就必然可以被表示为4(x + 1)+5y的形式，说明对于k+1也成立，证明完成。</p>
+<p>显然这题作为一个程序设计题有很多写法，效率也各不相同，按题目的意思来做不一定是最高效的写法。</p>
+<p>按这个证明的思路写递归还是很好写的，一步步翻译就好了</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">comb</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">12</span>:</span><br><span class="line">        <span class="keyword">return</span> [<span class="number">3</span>, <span class="number">0</span>]</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">13</span>:</span><br><span class="line">        <span class="keyword">return</span> [<span class="number">2</span>, <span class="number">1</span>]</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">14</span>:</span><br><span class="line">        <span class="keyword">return</span> [<span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">15</span>:</span><br><span class="line">        <span class="keyword">return</span> [<span class="number">0</span>, <span class="number">3</span>]</span><br><span class="line">    <span class="keyword">return</span> [comb(n - <span class="number">4</span>)[<span class="number">0</span>] + <span class="number">1</span>, comb(n - <span class="number">4</span>)[<span class="number">1</span>]]</span><br></pre></td></tr></table></figure>
+
+<p>题目还问了这个算法最多使用多少张5c的邮票，所有的base case中5c最多是3张，而我们只修改递归返回的4c邮票的数量，所以5c最多就是3张。</p>
+<p>测试这个代码会发现这个代码等价于尽可能多的使用4c邮票的策略，如果我想尽可能多得使用5c邮票呢。简单改动几个地方即可，这对应数学归纳法使用k+1-5进行证明的版本。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">comb</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">12</span>:</span><br><span class="line">        <span class="keyword">return</span> [<span class="number">3</span>, <span class="number">0</span>]</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">13</span>:</span><br><span class="line">        <span class="keyword">return</span> [<span class="number">2</span>, <span class="number">1</span>]</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">14</span>:</span><br><span class="line">        <span class="keyword">return</span> [<span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">15</span>:</span><br><span class="line">        <span class="keyword">return</span> [<span class="number">0</span>, <span class="number">3</span>]</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">16</span>:</span><br><span class="line">        <span class="keyword">return</span> [<span class="number">4</span>, <span class="number">0</span>]</span><br><span class="line">    <span class="keyword">return</span> [comb(n - <span class="number">5</span>)[<span class="number">0</span>], comb(n - <span class="number">5</span>)[<span class="number">1</span>] + <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="Celebrity-Problem"><a href="#Celebrity-Problem" class="headerlink" title="Celebrity Problem"></a>Celebrity Problem</h3><p>名人问题</p>
+<p>原题</p>
+<p>A celebrity at a party is someone who everyone knows, yet who knows no one. Suppose that you are at a party with n people. For any pair of people A and B at the party, you can ask A if they know B and receive an honest answer. Give a recursive algorithm to determine whether there is a celebrity at the party, and if so who, by asking at most 3n−4 questions. (Note: for the purpose of this question you are just visiting the party to ask questions. What you are trying to determine is whether the n people actually attending the party include a celebrity.) Prove by induction that your algorithm always correctly identifies a celebrity if there is one, and that the number of questions is at most 3n−4.</p>
+<p>一场派对中的名人满足以下条件</p>
+<p>1.名人不认识任何其他人</p>
+<p>2.其他人都认识名人</p>
+<p>可以对一个人提问，提问一个人是否认识另外一个人，并且总能得到诚实的回答</p>
+<p>要求设计递归算法，给定n个人，判定是否有名人存在，有则输出这个名人。并使用归纳法证明算法的正确性，同时证明算法至多需要提问3n-4次。</p>
+<p>这个题刚看比较蒙，直接设计递归算法对我来说有点难，于是我根据3n-4这个线索先进行数学归纳（读者也可以思考一下，感觉对于初学者这题还是有难度的）</p>
+<p><strong>基本情况</strong></p>
+<p>n &#x3D; 2， 3n - 4 &#x3D;2</p>
+<p>这里给相当于给了提示，为什么数字设置成3n-4，为什么2个人需要提2个问题。</p>
+<p>对于A与B两个人，询问A是否知道B，如果A知道B，那么A一定不是名人，问题在于名人不是必然存在，所以即使知道A不是名人，还是要问B是否知道A。B知道A，那么两个人都不是名人，B不知道A，B就是名人。至此基本情况n &#x3D; 2满足条件，可以通过2个问题正确地获得答案。</p>
+<p><strong>归纳假设</strong></p>
+<p>假设对于k个人，可以使用最多3k-4个问题获取名人</p>
+<p><strong>归纳递推</strong>（思考一下该怎么递推）</p>
+<p>我们已经假设了k个人的情况成立，需要证明k+1的情况也成立。</p>
+<p>最开始我考虑以下思路：</p>
+<p>我们使用3k-4个问题找到了k个人中的一个可能名人，接下来需要对这个可能名人和多加的那个人重复n&#x3D;2的步骤就可以确认可能名人是不是名人。</p>
+<p>这里存在两个问题，一个是使用3k-4个问题对于k个人的询问，最终可能获得的是这k个人中不存在名人，这种情况代表着对于多出来的那个人，还需要至多2k次提问来确认其是不是名人，因为如果多的人确实是名人，就需要通过k次提问，确保其满足条件1，另外k次提问确保满足条件2，这就不保证最多需要3k-4次了。</p>
+<p>另一个问题是，如果找出了k个人中的可能名人，和多出的人重复n&#x3D;2的步骤，得到的结果有3种可能，1是可能名人确实是名人，2两个人都不是名人，这两种情况可以返回正确答案，但如果是第三种可能-多出的人是名人呢，又回到了第一个问题，只不过此时只需要2k-2次。</p>
+<p>无论如何，以上思路都是不能保证正确性的，保证正确性则次数必然超出范围。</p>
+<p>思考一下上面思路导致的两个问题，共性就是无论我对于k个人的询问结果如何，在最坏情况下，<strong>由于对于多出的那个人的身份无法确认</strong>，都需要去再次确认多出的那个人的身份，这必然导致提问次数超出。</p>
+<p>怎么确认多出的那个人的身份，实际上我们不需要确认，我们可以把已经确认身份的人作为多出的那个人。</p>
+<p>思路如下：</p>
+<p>对于k+1个人，选择两个人AB，询问A是否知道B</p>
+<p>若A知道B，A一定不是名人，将A排除在外，对于剩余k个人执行询问，考虑最坏情形，我们得到了一个可能名人C，对A与C执行n&#x3D;2，返回结果，此时一定是正确的</p>
+<p>若A不知道B，B一定不是名人，上面的A改成B即可。</p>
+<p>最多询问多少次呢，一开始的询问算1次，k个人的询问花费3k-4次，最后n&#x3D;2的情形花费2次，共</p>
+<p>3k-4+1+2 &#x3D; 3(k+1)-4次，证明完成。</p>
+<p>接下来根据归纳法给出递归算法，这里要说的是，在leetcode和一些其他题库中，名人问题中的认识关系使用矩阵表示，这里的算法使用python字典表示，这里的算法按刷题网站的输入格式和函数原型来写实际上不太好写（也可能是我太菜），不过自己造的一些测试样例也是可以验证正确性的。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">knows</span>(<span class="params">people, a, b</span>):</span><br><span class="line">    <span class="keyword">return</span> b <span class="keyword">in</span> people[a]</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">find</span>(<span class="params">people</span>):</span><br><span class="line">    names = <span class="built_in">list</span>(people.keys())</span><br><span class="line">    n = <span class="built_in">len</span>(names)</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">2</span>:</span><br><span class="line">        A, B = names</span><br><span class="line">        <span class="keyword">if</span> knows(people, A, B):</span><br><span class="line">            <span class="keyword">if</span> knows(people, B, A):</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;不存在&quot;</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> B</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> A</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        A, B = names[<span class="number">0</span>], names[<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">if</span> knows(people, A, B):</span><br><span class="line">            A_people = people[A]</span><br><span class="line">            <span class="keyword">del</span> people[A]</span><br><span class="line">            celebrity = find(people)</span><br><span class="line">            <span class="keyword">if</span> celebrity != <span class="string">&quot;不存在&quot;</span>:</span><br><span class="line">                <span class="keyword">return</span> find(&#123;A : A_people, celebrity : people[celebrity]&#125;)</span><br><span class="line">            <span class="keyword">return</span> celebrity</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            B_people = people[B]</span><br><span class="line">            <span class="keyword">del</span> people[B]</span><br><span class="line">            celebrity = find(people)</span><br><span class="line">            <span class="keyword">if</span> celebrity != <span class="string">&quot;不存在&quot;</span>:</span><br><span class="line">                <span class="keyword">return</span> find(&#123;B : B_people, celebrity : people[celebrity]&#125;)</span><br><span class="line">            <span class="keyword">return</span> celebrity</span><br></pre></td></tr></table></figure>
+
+<p>全知全能的bing ai给出了一些测试样例</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">test_find</span>():</span><br><span class="line">    people = &#123;</span><br><span class="line">        <span class="string">&quot;Alice&quot;</span>: [<span class="string">&quot;Bob&quot;</span>],</span><br><span class="line">        <span class="string">&quot;Bob&quot;</span>: [],</span><br><span class="line">        <span class="string">&quot;Charlie&quot;</span>: [<span class="string">&quot;Alice&quot;</span>, <span class="string">&quot;Bob&quot;</span>],</span><br><span class="line">        <span class="string">&quot;David&quot;</span>: [<span class="string">&quot;Alice&quot;</span>, <span class="string">&quot;Bob&quot;</span>, <span class="string">&quot;Charlie&quot;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">assert</span> find(people) == <span class="string">&quot;Bob&quot;</span></span><br><span class="line"></span><br><span class="line">    people = &#123;</span><br><span class="line">        <span class="string">&quot;Alice&quot;</span>: [<span class="string">&quot;Bob&quot;</span>, <span class="string">&quot;Charlie&quot;</span>],</span><br><span class="line">        <span class="string">&quot;Bob&quot;</span>: [<span class="string">&quot;Charlie&quot;</span>],</span><br><span class="line">        <span class="string">&quot;Charlie&quot;</span>: []</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">assert</span> find(people) == <span class="string">&quot;Charlie&quot;</span></span><br><span class="line"></span><br><span class="line">    people = &#123;</span><br><span class="line">        <span class="string">&quot;Alice&quot;</span>: [<span class="string">&quot;Bob&quot;</span>],</span><br><span class="line">        <span class="string">&quot;Bob&quot;</span>: [<span class="string">&quot;Alice&quot;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">assert</span> find(people) == <span class="string">&quot;不存在&quot;</span></span><br><span class="line"></span><br><span class="line">    people = &#123;</span><br><span class="line">        <span class="string">&quot;Alice&quot;</span>: [<span class="string">&quot;Bob&quot;</span>, <span class="string">&quot;Charlie&quot;</span>, <span class="string">&quot;David&quot;</span>],</span><br><span class="line">        <span class="string">&quot;Bob&quot;</span>: [<span class="string">&quot;Charlie&quot;</span>, <span class="string">&quot;David&quot;</span>],</span><br><span class="line">        <span class="string">&quot;Charlie&quot;</span>: [<span class="string">&quot;David&quot;</span>],</span><br><span class="line">        <span class="string">&quot;David&quot;</span>: []</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">assert</span> find(people) == <span class="string">&quot;David&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;所有测试用例都通过了！&quot;</span>)</span><br><span class="line"></span><br><span class="line">test_find()</span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://hollowlamp.com">空心灯</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://hollowlamp.com/posts/12e4fd6e.html">http://hollowlamp.com/posts/12e4fd6e.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://hollowlamp.com" target="_blank">空心灯的星空</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/CS%E8%AF%BE%E7%A8%8B/">CS课程</a><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/">学习记录</a></div><div class="post_share"><div class="social-share" data-image="https://bu.dusays.com/2024/03/04/65e4a3abd4a5e.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/d8b71ed7.html" title="CS61A学习总结与个人经验分享"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://bu.dusays.com/2024/03/04/65e4a2ab0d60a.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-17</div><div class="title">CS61A学习总结与个人经验分享</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">空心灯</div><div class="author-info__description">Don't compare</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/HollowLamp" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Postage-Stamp-Problem"><span class="toc-number">1.</span> <span class="toc-text">Postage Stamp Problem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Celebrity-Problem"><span class="toc-number">2.</span> <span class="toc-text">Celebrity Problem</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/12e4fd6e.html" title="CS70学习记录-递归与数学归纳"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://bu.dusays.com/2024/03/04/65e4a3abd4a5e.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CS70学习记录-递归与数学归纳"/></a><div class="content"><a class="title" href="/posts/12e4fd6e.html" title="CS70学习记录-递归与数学归纳">CS70学习记录-递归与数学归纳</a><time datetime="2023-12-25T16:00:00.000Z" title="发表于 2023-12-26 00:00:00">2023-12-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/d8b71ed7.html" title="CS61A学习总结与个人经验分享"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://bu.dusays.com/2024/03/04/65e4a2ab0d60a.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CS61A学习总结与个人经验分享"/></a><div class="content"><a class="title" href="/posts/d8b71ed7.html" title="CS61A学习总结与个人经验分享">CS61A学习总结与个人经验分享</a><time datetime="2023-12-17T12:12:50.976Z" title="发表于 2023-12-17 20:12:50">2023-12-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/ed9bfe8b.html" title="碎碎念总集"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://bu.dusays.com/2024/03/11/65eef9e26ccd7.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="碎碎念总集"/></a><div class="content"><a class="title" href="/posts/ed9bfe8b.html" title="碎碎念总集">碎碎念总集</a><time datetime="2004-10-30T16:00:00.000Z" title="发表于 2004-10-31 00:00:00">2004-10-31</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2024 By 空心灯</div><div class="footer_custom_text">Be your own light</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.24/fancybox/fancybox.umd.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/instant.page/5.2.0/instantpage.min.js" type="module"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/17.8.4/lazyload.iife.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"><script>(() => {
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo.hollowlamp.com/',
+      region: '',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') setTimeout(init,0)
+    else getScript('https://cdnjs.cloudflare.com/ajax/libs/twikoo/1.6.22/twikoo.all.min.js').then(init)
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo.hollowlamp.com/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else {
+      loadTwikoo()
+      GLOBAL_CONFIG_SITE.isPost && getCount()
+    }
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
